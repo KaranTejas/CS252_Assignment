@@ -3,10 +3,39 @@
 
 #define NUMBER_OF_THREADS 6
 
-DWORD WINAPI PrintParameters(int i){
+DWORD WINAPI PrintParameters1(int i){
     printf("%d\n",i);
     return 0;
 }
+DWORD WINAPI PrintParameters2(int i){
+    printf("%d\n",i + 1);
+    return 0;
+}
+DWORD WINAPI PrintParameters3(int i){
+    printf("%d\n",i + 2);
+    return 0;
+}
+DWORD WINAPI PrintParameters4(int i){
+    printf("%d\n",i + 3);
+    return 0;
+}
+DWORD WINAPI PrintParameters5(int i){
+    printf("%d\n",i + 4);
+    return 0;
+}
+DWORD WINAPI PrintParameters6(int i){
+    printf("%d\n",i + 5);
+    return 0;
+}
+
+DWORD WINAPI (*PrintFunct[NUMBER_OF_THREADS])() = {
+    PrintParameters1,
+    PrintParameters2,
+    PrintParameters3,
+    PrintParameters4,
+    PrintParameters5,
+    PrintParameters6
+};
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +45,7 @@ int main(int argc, char *argv[])
         ThreadHandle[i] = CreateThread(
             NULL,
             0,
-            PrintParameters,
+            *PrintFunct[i],
             atoi(argv[1]),
             0,
             &ThreadId[i]
