@@ -97,6 +97,7 @@ DWORD WINAPI StandardDeviationMedianFunc(int *arr){
 }
 
 // Storing the function addresses to use as callback functions while creating threads
+
 DWORD WINAPI (*PrintFunct[6])() = {
     AverageFunc,
     MaximumFunc,
@@ -125,7 +126,7 @@ int main(int argc, char *argv[])
         QuantityThreadHandle[i] = CreateThread(
             NULL,
             0,
-            *PrintFunct[i],
+            (LPTHREAD_START_ROUTINE)*PrintFunct[i],
             arr,
             0,
             &QuantityThreadId[i]
@@ -144,7 +145,7 @@ int main(int argc, char *argv[])
         QuantityThreadHandle[i] = CreateThread(
             NULL,
             0,
-            *PrintFunct[i + 4],
+            (LPTHREAD_START_ROUTINE)*PrintFunct[i + 4],
             arr,
             0,
             &QuantityThreadId[i]

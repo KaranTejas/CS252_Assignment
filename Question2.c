@@ -5,25 +5,26 @@
 
 #define NUMBER_OF_THREADS 50
 
+typedef struct {
+    int i;
+    int Max;
+} MyData;
+
 // Assumption that given N < 1000000 to implement the Sieve of Eratosthenes algorithm to find Prime Numbers
 int prime[1000000];
 
-DWORD WINAPI IsPrime(long int N){
-    for(int i = 2 ; i <= (int)sqrt(N); i++){
-        if(N % 2 == 0){
-            prime[N] = 0;
-            return 0;
+DWORD WINAPI IsPrimeSieve(PVOID num_max_){
+    MyData num_max = *(MyData *)num_max_;
+    long int num = num_max.i;
+    long int max = num_max.Max;
+    for(int i = num; i <= max ; i++ ){
+        if(prime[i] == -1){
+            prime[i] = 1;
+            for(int j = 2; i * j <= max ; j++){
+                prime[i * j] = 0;
+            }
         }
     }
-    prime[N] = 1;
-    return 0;
-}
-
-DWORD WINAPI Multiple(long int N,long int MAX){
-    for(int i = 2; N * i <= MAX ; i++){
-        prime[i * N] = 0;
-    }
-    return 0;
 }
 
 
@@ -33,18 +34,28 @@ int main(int argc, char *argv[])
     for(long int i = 0 ; i < 1000000; i++){
         prime[i] = -1;
     }
+    MyData PARAMETER[NUMBER_OF_THREADS];
     DWORD ThreadId[NUMBER_OF_THREADS];
     HANDLE ThreadHandle[NUMBER_OF_THREADS];
-    for(long int i = 2 ; i <= N ; i += NUMBER_OF_THREADS ){
-        for(long int j = i ; j < i + NUMBER_OF_THREADS && j <= N ; j++){
-            if(prime[j] == -1){
-                IsPrime(j);
-                Multiple(j,N);
-            }
-        }
+    for(int i = 0 ; i < NUMBER_OF_THREADS ; i++){
+        PARAMETER[i].i = i + 2;
+        PARAMETER[i].Max = N;
+        ThreadHandle[i] = CreateThread(
+            NULL,
+            0,
+            IsPrimeSieve,
+            &PARAMETER[i],
+            0,
+            &ThreadId[i]
+        );
     }
+    WaitForMultipleObjects(NUMBER_OF_THREADS,ThreadHandle,TRUE,INFINITE);
+    for(int i = 0 ; i < NUMBER_OF_THREADS ; i++){
+        CloseHandle(ThreadHandle[i]);
+    }
+
     printf("Prime Numbers less than or equal to %ld :\n",N);
-    int count = 0;
+    long int count = 0;
     for(long int i = 0 ; i <= N; i++){
         if(prime[i] == 1){
             count++;
