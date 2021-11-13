@@ -10,7 +10,7 @@ int Median = 0;
 double StandardDeviationMean = 0;
 double StandardDeviationMedian = 0;
 
-DWORD WINAPI AverageFunc(int *arr){
+void AverageFunc(int *arr){
     int N = *arr;
     int sum = 0;
 
@@ -20,10 +20,9 @@ DWORD WINAPI AverageFunc(int *arr){
 
     Average = ((double) sum) / N;
     printf("Average = %lf\n",Average);
-    return 0;
 }
 
-DWORD WINAPI MaximumFunc(int *arr){
+void MaximumFunc(int *arr){
     int N = *arr;
 
     for(int i = 1 ; i <= N ; i++){
@@ -31,10 +30,9 @@ DWORD WINAPI MaximumFunc(int *arr){
     }
 
     printf("Maximum = %d\n",Maximum);
-    return 0;
 }
 
-DWORD WINAPI MinimumFunc(int *arr){
+void MinimumFunc(int *arr){
     int N = *arr;
 
     for(int i = 1 ; i <= N ; i++){
@@ -42,10 +40,9 @@ DWORD WINAPI MinimumFunc(int *arr){
     }
 
     printf("Minimum = %d\n",Minimum);
-    return 0;
 }
 
-DWORD WINAPI MedianFunc(int *arr){
+void MedianFunc(int *arr){
     int N = *arr;
     int temp;
 
@@ -67,10 +64,9 @@ DWORD WINAPI MedianFunc(int *arr){
     }
 
     printf("Median = %d\n",Median);
-    return 0;
 }
 
-DWORD WINAPI StandardDeviationMeanFunc(int *arr){
+void StandardDeviationMeanFunc(int *arr){
     int N = *arr;
     double Var = 0;
 
@@ -80,10 +76,9 @@ DWORD WINAPI StandardDeviationMeanFunc(int *arr){
 
     StandardDeviationMean = sqrt(Var/N);
     printf("Standard deviation about Mean = %.4lf\n",StandardDeviationMean);
-    return 0;
 }
 
-DWORD WINAPI StandardDeviationMedianFunc(int *arr){
+void StandardDeviationMedianFunc(int *arr){
     int N = *arr;
     double Var = 0;
 
@@ -93,12 +88,11 @@ DWORD WINAPI StandardDeviationMedianFunc(int *arr){
 
     StandardDeviationMedian = sqrt(Var/N);
     printf("Standard deviation about Median = %.4lf\n",StandardDeviationMedian);
-    return 0;
 }
 
 // Storing the function addresses to use as callback functions while creating threads
 
-DWORD WINAPI (*PrintFunct[6])() = {
+void (*PrintFunct[6])() = {
     AverageFunc,
     MaximumFunc,
     MinimumFunc,
