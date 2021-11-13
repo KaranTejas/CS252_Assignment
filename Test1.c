@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         &ThreadId
     );
     WaitForSingleObject(ThreadHandle,INFINITE);
-
+    CloseHandle(ThreadHandle);
     printf("%d,%s",argc,argv[1]);
     return 0;
 }
