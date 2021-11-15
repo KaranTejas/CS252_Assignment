@@ -14,7 +14,7 @@ To run the Question 1 code from the command line, type the following commands:
 
 A sample test case:
 
-![alt text](https://github.com/KaranTejas/CS252_Assignment/blob/main/Output/Question2Output.PNG)
+![alt text](https://github.com/KaranTejas/CS252_Assignment/blob/main/Output/Question1Output.PNG)
 
 ## Question 2
 
