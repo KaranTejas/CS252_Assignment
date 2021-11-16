@@ -5,21 +5,17 @@
 
 #define NUMBER_OF_THREADS 50
 
-typedef struct {
-    int i;
-    int Max;
-} MyData;
+long int max;
+long int last_prime = 2;
 
 // Assumption that given N < 1000000 to implement the Sieve of Eratosthenes algorithm to find Prime Numbers
 int prime[1000000];
 
 DWORD WINAPI IsPrimeSieve(PVOID num_max_){
-    MyData num_max = *(MyData *)num_max_;
-    long int num = num_max.i;
-    long int max = num_max.Max;
-    for(int i = num; i <= max ; i++ ){
+    for(int i = last_prime; i <= max ; i++ ){
         if(prime[i] == -1){
             prime[i] = 1;
+            last_prime = i;
             for(int j = 2; i * j <= max ; j++){
                 prime[i * j] = 0;
             }
@@ -34,17 +30,15 @@ int main(int argc, char *argv[])
     for(long int i = 0 ; i < 1000000; i++){
         prime[i] = -1;
     }
-    MyData PARAMETER[NUMBER_OF_THREADS];
     DWORD ThreadId[NUMBER_OF_THREADS];
     HANDLE ThreadHandle[NUMBER_OF_THREADS];
     for(int i = 0 ; i < NUMBER_OF_THREADS ; i++){
-        PARAMETER[i].i = i + 2;
-        PARAMETER[i].Max = N;
+        max = N;
         ThreadHandle[i] = CreateThread(
             NULL,
             0,
             IsPrimeSieve,
-            &PARAMETER[i],
+            NULL,
             0,
             &ThreadId[i]
         );
